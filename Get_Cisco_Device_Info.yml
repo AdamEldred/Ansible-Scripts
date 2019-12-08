@@ -5,10 +5,9 @@
   
   tasks:
   - name: Gather facts (generic)
-          setup:
-          register: result
-          ignore_errors: true
-          ignore_unreachable: true
+    setup:
+    ignore_errors: true
+    ignore_unreachable: true
   - name: Inventory Network Devices
     block:  
         - name: Set vars for ios
