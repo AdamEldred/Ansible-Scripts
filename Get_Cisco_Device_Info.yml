@@ -7,16 +7,26 @@
   tasks:
     - name: Gather facts (ios)
       ios_facts:
-      when: ansible_network_os == 'ios'
+      register: result
+      ignore_errors: true
+      
     - name: Gather facts (nxos)
       nxos_facts:
-      when: ansible_network_os == 'nxos'
+      register: result
+      ignore_errors: true
+      when: result is failed
+      
     - name: Gather facts (iosxr)
       iosxr_facts:
-      when: ansible_network_os == 'iosxr'
+      register: result
+      ignore_errors: true
+      when: result is failed
+      
     - name: Gather facts (asa)
       iosxr_facts:
-      when: ansible_network_os == 'asa'
+      register: result
+      ignore_errors: true
+      when: result is failed
 
       
       
