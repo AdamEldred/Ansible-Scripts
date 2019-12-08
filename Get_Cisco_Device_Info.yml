@@ -20,10 +20,10 @@
           register: result
           ignore_errors: true
         
-        - name: Set vars for nxos
-          set_fact:
-            ansible_network_os: nxos
-          when: result is failed
+        # - name: Set vars for nxos
+          # set_fact:
+            # ansible_network_os: nxos
+          # when: result is failed
           
         - name: Gather facts (nxos)
           nxos_facts:
