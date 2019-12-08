@@ -29,7 +29,7 @@
           nxos_facts:
           register: result
           ignore_errors: true
-          when: result is failed
+          # when: result is failed
           
         - name: Set vars for iosxr
           set_fact:
