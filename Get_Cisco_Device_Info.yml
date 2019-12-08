@@ -5,52 +5,25 @@
   gather_facts: no
   
   tasks:
-  # - name: Gather facts (generic)
-    # setup:
-    # ignore_errors: true
-    # ignore_unreachable: true
-  - name: Inventory Network Devices
-    block:  
-        # - name: Set vars for ios
-          # set_fact:
-            # ansible_connection: network_cli
-            # ansible_network_os: ios
-          
-        # - name: Gather facts (ios)
-          # ios_facts:
-          # register: result
-          # ignore_errors: true
-        
-        # - name: Set vars for nxos
-          # set_fact:
-            # ansible_network_os: nxos
-          # when: result is failed
-          
-        - name: Gather facts (nxos)
-          nxos_facts:
-          # register: result
-          # ignore_errors: true
-          #when: result is failed
-          
-        # - name: Set vars for iosxr
-          # set_fact:
-            # ansible_network_os: iosxr
-          # when: result is failed
-          
-        # - name: Gather facts (iosxr)
-          # iosxr_facts:
-          # register: result
-          # ignore_errors: true
-          # when: result is failed
-          
-        # - name: Set vars for asa
-          # set_fact:
-            # ansible_network_os: asa
-          # when: result is failed
-          
-        # - name: Gather facts (asa)
-          # iosxr_facts:
-          # register: result
-          # ignore_errors: true
-          # when: result is failed
-    when: (ansible_facts['hostname'] is undefined) or (ansible_facts['hostname'] == "")
+    - name: Gather facts (ios)
+      ios_facts:
+      register: result
+      ignore_errors: true
+      
+    - name: Gather facts (nxos)
+      nxos_facts:
+      register: result
+      ignore_errors: true
+      when: result is failed
+      
+    - name: Gather facts (iosxr)
+      iosxr_facts:
+      register: result
+      ignore_errors: true
+      when: result is failed
+      
+    - name: Gather facts (asa)
+      iosxr_facts:
+      register: result
+      ignore_errors: true
+      when: result is failed
