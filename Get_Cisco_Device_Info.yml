@@ -54,4 +54,4 @@
           register: result
           ignore_errors: true
           when: result is failed
-   when:!ansible_facts['hostname'] | ansible_facts['hostname'] == ""
+    when: !ansible_facts['hostname'] | ansible_facts['hostname'] == ""
