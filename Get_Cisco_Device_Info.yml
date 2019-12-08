@@ -9,10 +9,10 @@
     ignore_errors: true
     ignore_unreachable: true
   - name: Inventory Network Devices
-    block:  
+    block:
+        - connection: network_cli
         - name: Set vars for ios
           set_fact:
-            connection: network_cli
             ansible_network_os: ios
           
         - name: Gather facts (ios)
