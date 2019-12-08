@@ -1,35 +1,57 @@
 ---
 - name: "Get Cisco Device Info"
   hosts: all
-  connection: network_cli
   gather_facts: no
   
   tasks:
-    - name: Gather facts (ios)
-      ios_facts:
-      register: result
-      ignore_errors: true
-      
-    - name: Gather facts (nxos)
-      nxos_facts:
-      register: result
-      ignore_errors: true
-      when: result is failed
-      
-    - name: Gather facts (iosxr)
-      iosxr_facts:
-      register: result
-      ignore_errors: true
-      when: result is failed
-      
-    - name: Gather facts (asa)
-      iosxr_facts:
-      register: result
-      ignore_errors: true
-      when: result is failed
-
-      
-      
-    - name: Display some facts
-      debug:
-        msg: "The hostname is {{ ansible_net_hostname }} and the OS is {{ ansible_net_version }}"
+  - name: Inventory Devices
+    block:
+        - name: Gather facts (generic)
+          setup:
+          register: result
+          ignore_errors: true
+          
+        - name: Set vars for ios
+          vars:
+            connection: network_cli
+            ansible_network_os: ios
+          when: result is failed
+          
+        - name: Gather facts (ios)
+          ios_facts:
+          register: result
+          ignore_errors: true
+        
+        - name: Set vars for nxos
+          vars:
+            ansible_network_os: nxos
+          when: result is failed
+          
+        - name: Gather facts (nxos)
+          nxos_facts:
+          register: result
+          ignore_errors: true
+          when: result is failed
+          
+        - name: Set vars for iosxr
+          vars:
+            ansible_network_os: iosxr
+          when: result is failed
+          
+        - name: Gather facts (iosxr)
+          iosxr_facts:
+          register: result
+          ignore_errors: true
+          when: result is failed
+          
+        - name: Set vars for asa
+          vars:
+            ansible_network_os: asa
+          when: result is failed
+          
+        - name: Gather facts (asa)
+          iosxr_facts:
+          register: result
+          ignore_errors: true
+          when: result is failed
+   when:!ansible_facts['hostname'] | ansible_facts['hostname'] == ""
