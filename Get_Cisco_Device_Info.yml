@@ -6,7 +6,7 @@
   
   tasks:
     - name: Run Setup
-        setup:
+      setup:
     # - name: Gather facts (ios)
       # ios_facts:
 
