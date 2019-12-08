@@ -12,7 +12,7 @@
           ignore_errors: true
           
         - name: Set vars for ios
-          vars:
+          set_fact:
             connection: network_cli
             ansible_network_os: ios
           when: result is failed
@@ -23,7 +23,7 @@
           ignore_errors: true
         
         - name: Set vars for nxos
-          vars:
+          set_fact:
             ansible_network_os: nxos
           when: result is failed
           
@@ -34,7 +34,7 @@
           when: result is failed
           
         - name: Set vars for iosxr
-          vars:
+          set_fact:
             ansible_network_os: iosxr
           when: result is failed
           
@@ -45,7 +45,7 @@
           when: result is failed
           
         - name: Set vars for asa
-          vars:
+          set_fact:
             ansible_network_os: asa
           when: result is failed
           
