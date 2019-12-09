@@ -7,6 +7,8 @@
 
   tasks:
   - debug: var=ansible_facts
+  - debug:
+      var: hostvars['iosv-1']
   - name: Set IOS Devices
     block:                
       - name: Set Credential with auth/priv
