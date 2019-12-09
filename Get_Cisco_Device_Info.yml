@@ -9,12 +9,12 @@
         - name: Gather facts (ios)
           ios_facts:
           register: result
-          when: "'Cisco IOS Devices' in group_names"
+          when: "'Cisco_IOS_Devices' in group_names"
           
         - name: Gather facts (nxos)
           nxos_facts:
           register: result
-          when: "'Cisco NXOS Devices' in group_names"
+          when: "'Cisco_NXOS_Devices' in group_names"
           
         - name: Set vars discovery
           set_fact:
@@ -22,4 +22,4 @@
             cacheable: yes
           when: result is succeeded
 
-    when: (ansible_facts['discovery_complete'] is undefined) or (not ansible_facts['discovery_complete'])
+    when: (ansible_facts['discovery_complete'] is undefined) or (not ansible_facts['discovery_complete']) or (force_refresh == "True")
