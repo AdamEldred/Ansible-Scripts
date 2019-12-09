@@ -21,4 +21,4 @@
             discovery_complete: true
           when: result is succeeded
 
-    when: (ansible_facts['discovery_complete'] is undefined) or (!ansible_facts['discovery_complete'])
+    when: (ansible_facts['discovery_complete'] is undefined) or (not ansible_facts['discovery_complete'])
