@@ -1,0 +1,4 @@
+set enforce secure password
+set password for default user admin
+hostname devicename
+set management interface to dhcp

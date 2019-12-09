@@ -1,0 +1,8 @@
+hostname devicename
+aaa new-model
+username admin priv 15 secret *****
+enable secret *****
+ip domain-name domain.local
+crypto key genera rsa general-keys mod 2048
+int g0
+ip address dhcp
