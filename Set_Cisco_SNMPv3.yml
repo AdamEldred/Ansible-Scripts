@@ -32,7 +32,7 @@
             - snmp-server user {{ snmpv3_username }} {{ snmpv3_group }} v3
         when: snmpv3_level == "noauth"
 
-    when: ansible_facts['ansible_net_system'] == "ios"
+    when: ansible_network_os == "ios"
 
   - name: Set NXOS Devices
     block:                
@@ -60,4 +60,4 @@
           group: "{{ 'network-admin' if snmpv3_accessLevel is 'write' else 'network-operator' }}"
         when: snmpv3_level == "noauth"
         
-    when: ansible_facts['ansible_net_system'] == "nxos"
+    when: ansible_network_os == "nxos"
