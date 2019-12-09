@@ -6,29 +6,26 @@
 #Must Provide snmpv3 custom credential and snmpv3_accessLevel variable via survey ("read" or "write")
 
   tasks:
-  - debug: var=ansible_facts
-  - debug:
-      var: hostvars['iosv-1']
   - name: Set IOS Devices
     block:                
       - name: Set Credential with auth/priv
         ios_config:
           lines:
-            - snmp-server group {{ snmpv3_group }} v3 {{ snmpv3_level }} {{ snmpv3_accessLevel }} {{ snmpv3_view }}
+            - snmp-server group {{ snmpv3_group }} v3 {{ snmpv3_level }} {{ snmpv3_accessLevel }} v1default
             - snmp-server user {{ snmpv3_username }} {{ snmpv3_group }} v3 auth {{ snmpv3_authType }} {{ snmpv3_authKey }} priv {{ snmpv3_privType }} {{ snmpv3_privKey }}
         when: snmpv3_level == "priv"
 
       - name: Set Credential with auth only
         ios_config:
           lines:
-            - snmp-server group {{ snmpv3_group }} v3 {{ snmpv3_level }} {{ snmpv3_accessLevel }} {{ snmpv3_view }}
+            - snmp-server group {{ snmpv3_group }} v3 {{ snmpv3_level }} {{ snmpv3_accessLevel }} v1default
             - snmp-server user {{ snmpv3_username }} {{ snmpv3_group }} v3 auth {{ snmpv3_authType }} {{ snmpv3_authKey }}
         when: snmpv3_level == "auth"
 
       - name: Set Credential with no auth/priv
         ios_config:
           lines:
-            - snmp-server group {{ snmpv3_group }} v3 {{ snmpv3_level }} {{ snmpv3_accessLevel }} {{ snmpv3_view }}
+            - snmp-server group {{ snmpv3_group }} v3 {{ snmpv3_level }} {{ snmpv3_accessLevel }} v1default
             - snmp-server user {{ snmpv3_username }} {{ snmpv3_group }} v3
         when: snmpv3_level == "noauth"
 
