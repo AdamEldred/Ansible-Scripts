@@ -13,21 +13,21 @@
           lines:
             - snmp-server group {{ snmpv3_group }} v3 {{ snmpv3_level }} {{ snmpv3_accessLevel }} {{ snmpv3_view }}
             - snmp-server user {{ snmpv3_username }} {{ snmpv3_group }} v3 auth {{ snmpv3_authType }} {{ snmpv3_authKey }} priv {{ snmpv3_privType }} {{ snmpv3_privKey }}
-        when: {{ snmpv3_level }} == "priv"
+        when: {{ snmpv3_level }} is "priv"
 
       - name: Set Credential with auth only
         ios_config:
           lines:
             - snmp-server group {{ snmpv3_group }} v3 {{ snmpv3_level }} {{ snmpv3_accessLevel }} {{ snmpv3_view }}
             - snmp-server user {{ snmpv3_username }} {{ snmpv3_group }} v3 auth {{ snmpv3_authType }} {{ snmpv3_authKey }}
-        when: {{ snmpv3_level }} == "auth"
+        when: {{ snmpv3_level }} is "auth"
 
       - name: Set Credential with no auth/priv
         ios_config:
           lines:
             - snmp-server group {{ snmpv3_group }} v3 {{ snmpv3_level }} {{ snmpv3_accessLevel }} {{ snmpv3_view }}
             - snmp-server user {{ snmpv3_username }} {{ snmpv3_group }} v3
-        when: {{ snmpv3_level }} == "noauth"
+        when: {{ snmpv3_level }} is "noauth"
 
     when: (ansible_facts['ansible_net_system'] is "ios")
 
@@ -41,7 +41,7 @@
           pwd: {{ snmpv3_authKey }}
           encrypt: yes
           privacy: {{ snmpv3_privKey }}
-        when: {{ snmpv3_level }} == "priv"
+        when: {{ snmpv3_level }} is "priv"
 
       - name: Set Credential with auth only
         nxos_snmp_user:
@@ -49,12 +49,12 @@
           group: {{ "network-admin" if {{ snmpv3_accessLevel }} is "write" else "network-operator" }}
           authentication: {{ snmpv3_authType }}
           pwd: {{ snmpv3_authKey }}
-        when: {{ snmpv3_level }} == "auth"
+        when: {{ snmpv3_level }} is "auth"
 
       - name: Set Credential with no auth/priv
         nxos_snmp_user:
           user: {{ snmpv3_username }}
           group: {{ "network-admin" if {{ snmpv3_accessLevel }} is "write" else "network-operator" }}
-        when: {{ snmpv3_level }} == "noauth"
+        when: {{ snmpv3_level }} is "noauth"
         
     when: (ansible_facts['ansible_net_system'] is "nxos")
