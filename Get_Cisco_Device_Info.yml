@@ -19,6 +19,7 @@
         - name: Set vars discovery
           set_fact:
             discovery_complete: true
+            cacheable: yes
           when: result is succeeded
 
     when: (ansible_facts['discovery_complete'] is undefined) or (not ansible_facts['discovery_complete'])
