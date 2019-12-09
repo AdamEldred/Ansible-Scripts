@@ -1,11 +1,12 @@
 ---
 - name: "Set Cisco SNMPv3"
   hosts: all
-  #gather_facts: no
+  gather_facts: no
 
 #Must Provide snmpv3 custom credential and snmpv3_accessLevel variable via survey ("read" or "write")
 
   tasks:
+  - debug: var=ansible_facts
   - name: Set IOS Devices
     block:                
       - name: Set Credential with auth/priv
