@@ -36,7 +36,7 @@
       - name: Set Credential with auth/priv
         nxos_snmp_user:
           user: {{ snmpv3_username }}
-          group: {{ "network-admin" if {{ snmpv3_accessLevel }} is "write" else "network-operator" }}
+          group: {{ "network-admin" if snmpv3_accessLevel is "write" else "network-operator" }}
           authentication: {{ snmpv3_authType }}
           pwd: {{ snmpv3_authKey }}
           encrypt: yes
@@ -46,7 +46,7 @@
       - name: Set Credential with auth only
         nxos_snmp_user:
           user: {{ snmpv3_username }}
-          group: {{ "network-admin" if {{ snmpv3_accessLevel }} is "write" else "network-operator" }}
+          group: {{ "network-admin" if snmpv3_accessLevel is "write" else "network-operator" }}
           authentication: {{ snmpv3_authType }}
           pwd: {{ snmpv3_authKey }}
         when: snmpv3_level == "auth"
@@ -54,7 +54,7 @@
       - name: Set Credential with no auth/priv
         nxos_snmp_user:
           user: {{ snmpv3_username }}
-          group: {{ "network-admin" if {{ snmpv3_accessLevel }} is "write" else "network-operator" }}
+          group: {{ "network-admin" if snmpv3_accessLevel is "write" else "network-operator" }}
         when: snmpv3_level == "noauth"
         
     when: (ansible_facts['ansible_net_system'] is "nxos")
