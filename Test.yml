@@ -4,5 +4,8 @@
   connection: network_cli
   gather_facts: no
   tasks:
-      - name: Gather Facts
-        nxos_facts:
+    - name: Set vars for nxos
+      set_fact:
+        ansible_network_os: nxos
+    - name: Gather Facts
+      nxos_facts:
