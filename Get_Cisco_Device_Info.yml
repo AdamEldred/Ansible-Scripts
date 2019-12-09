@@ -22,4 +22,4 @@
             cacheable: yes
           when: result is succeeded
 
-    when: (ansible_facts['discovery_complete'] is undefined) or (not ansible_facts['discovery_complete']) or (force_refresh)
+    when: (ansible_facts['discovery_complete'] is undefined) or (not ansible_facts['discovery_complete']) or (force_refresh == "True")
