@@ -1,6 +1,5 @@
 ---
 - name: "Get Cisco Device Info"
-  connection: network_cli
   hosts: all
   gather_facts: no
   
@@ -10,12 +9,16 @@
         - name: Gather facts (ios)
           ios_facts:
           register: result
-          ignore_errors: true
+          when: "'Cisco IOS Devices' in group_names"
           
         - name: Gather facts (nxos)
           nxos_facts:
           register: result
-          ignore_errors: true
-          when: result is failed
+          when: "'Cisco NXOS Devices' in group_names"
+          
+        - name: Set vars discovery
+          set_fact:
+            discovery_complete: true
+          when: result is succeeded
 
-    when: (ansible_facts['hostname'] is undefined) or (ansible_facts['hostname'] == "") or (ansible_facts['ansible_net_hostname'] is undefined) or (ansible_facts['ansible_net_hostname'] == "")
+    when: (ansible_facts['discovery_complete'] is undefined) or (ansible_facts['discovery_complete'] is false)
