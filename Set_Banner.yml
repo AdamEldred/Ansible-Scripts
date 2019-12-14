@@ -1,22 +1,22 @@
 ---
-- name: "Set Cisco Banner"
-  hosts: all
-  gather_facts: no
+    - name: "Set Cisco Banner"
+    hosts: all
+    gather_facts: no
     
     tasks:
     - name: Set IOS Devices
-      block:                
+        block:                
         - name: CONFIGURE BANNER ON CISCO DEVICES
-          ios_banner:
-          banner: login
-          text: "{{ lookup('file', './docs/banner.cfg') }}"
-          state: present
+            ios_banner:
+            banner: login
+            text: "{{ lookup('file', './docs/banner.cfg') }}"
+            state: present
         
         - name: SHOW RUN | SEC BANNER 
-          ios_command:
-          commands:
+            ios_command:
+            commands:
             - show run | sec banner
-          register: banner
+            register: banner
         
         - debug: var=banner.stdout_lines
 
