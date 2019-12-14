@@ -3,8 +3,8 @@
       hosts: all
       gather_facts: no
     
-    tasks:
-    - name: Set IOS Devices
+      tasks:
+      - name: Set IOS Devices
         block:                
         - name: CONFIGURE BANNER ON CISCO DEVICES
             ios_banner:
