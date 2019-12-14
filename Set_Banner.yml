@@ -20,4 +20,4 @@
         
         - debug: var=banner.stdout_lines
 
-    when: ansible_network_os == "ios"
+      when: ansible_network_os == "ios"
