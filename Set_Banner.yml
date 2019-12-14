@@ -1,5 +1,5 @@
 ---
-- name: "Set Cisco Banner"
+- name: "SET BANNER ON CISCO DEVICES"
   hosts: all
   gather_facts: no
 
