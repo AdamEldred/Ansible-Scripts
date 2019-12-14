@@ -6,18 +6,21 @@
   tasks:
     - name: Set IOS Devices
       block:                
-      - name: CONFIGURE BANNER ON CISCO DEVICES
+      - name: CONFIGURE BANNER ON CISCO IOS DEVICES
         ios_banner:
           banner: login
           text: "{{ lookup('file', './docs/banner.cfg') }}"
           state: present
-            
-      - name: SHOW RUN | SEC BANNER 
-        ios_command:
-          commands:
-          - show run | sec banner
-        register: banner
-        
-      - debug: var=banner.stdout_lines
 
       when: ansible_network_os == "ios"
+
+    tasks:
+    - name: Set NXOS Devices
+        block:                
+        - name: CONFIGURE BANNER ON CISCO NXOS DEVICES
+        nxos_banner:
+            banner: login
+            text: "{{ lookup('file', './docs/banner.cfg') }}"
+            state: present
+
+        when: ansible_network_os == "nxos"
