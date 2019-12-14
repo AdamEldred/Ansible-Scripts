@@ -14,13 +14,13 @@
 
       when: ansible_network_os == "ios"
 
-    tasks:
+  tasks:
     - name: Set NXOS Devices
-        block:                
-        - name: CONFIGURE BANNER ON CISCO NXOS DEVICES
+      block:                
+      - name: CONFIGURE BANNER ON CISCO NXOS DEVICES
         nxos_banner:
-            banner: login
-            text: "{{ lookup('file', './docs/banner.cfg') }}"
-            state: present
+          banner: login
+          text: "{{ lookup('file', './docs/banner.cfg') }}"
+          state: present
 
-        when: ansible_network_os == "nxos"
+      when: ansible_network_os == "nxos"
