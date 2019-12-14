@@ -1,23 +1,23 @@
 ---
     - name: "Set Cisco Banner"
-      hosts: all
-      gather_facts: no
+        hosts: all
+        gather_facts: no
     
-      tasks:
-        - name: Set IOS Devices
-            block:                
-                - name: CONFIGURE BANNER ON CISCO DEVICES
-                    ios_banner:
-                        banner: login
-                        text: "{{ lookup('file', './docs/banner.cfg') }}"
-                        state: present
-            
-                - name: SHOW RUN | SEC BANNER 
-                    ios_command:
-                        commands:
-                        - show run | sec banner
-                    register: banner
+        tasks:
+            - name: Set IOS Devices
+                block:                
+                    - name: CONFIGURE BANNER ON CISCO DEVICES
+                        ios_banner:
+                            banner: login
+                            text: "{{ lookup('file', './docs/banner.cfg') }}"
+                            state: present
                 
-                - debug: var=banner.stdout_lines
+                    - name: SHOW RUN | SEC BANNER 
+                        ios_command:
+                            commands:
+                            - show run | sec banner
+                        register: banner
+                    
+                    - debug: var=banner.stdout_lines
 
-            when: ansible_network_os == "ios"
+                when: ansible_network_os == "ios"
