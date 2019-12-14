@@ -19,7 +19,7 @@
       block:                
       - name: CONFIGURE BANNER ON CISCO NXOS DEVICES
         nxos_banner:
-          banner: login
+          banner: motd
           text: "{{ lookup('file', './docs/banner.cfg') }}"
           state: present
 
