@@ -14,6 +14,7 @@
             - no snmp-server group {{ snmpv3_group }} v3 {{ snmpv3_level }} match exact {{ snmpv3_accessLevel }} v1default
             - no snmp-server user {{ snmpv3_username }} {{ snmpv3_group }} v3 auth {{ snmpv3_authType }} {{ snmpv3_authKey }} priv {{ snmpv3_privType }} {{ snmpv3_privKey }}
           defaults: yes
+          save_when: changed
         when: snmpv3_level == "priv"
 
       - name: Set Credential with auth only
@@ -22,6 +23,7 @@
             - no snmp-server group {{ snmpv3_group }} v3 {{ snmpv3_level }} match exact {{ snmpv3_accessLevel }} v1default
             - no snmp-server user {{ snmpv3_username }} {{ snmpv3_group }} v3 auth {{ snmpv3_authType }} {{ snmpv3_authKey }}
           defaults: yes
+          save_when: changed
         when: snmpv3_level == "auth"
 
       - name: Set Credential with no auth/priv
@@ -30,6 +32,7 @@
             - no snmp-server group {{ snmpv3_group }} v3 {{ snmpv3_level }} match exact {{ snmpv3_accessLevel }} v1default
             - no snmp-server user {{ snmpv3_username }} {{ snmpv3_group }} v3
           defaults: yes
+          save_when: changed
         when: snmpv3_level == "noauth"
 
     when: ansible_network_os == "ios"
