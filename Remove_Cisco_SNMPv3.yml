@@ -1,0 +1,44 @@
+---
+- name: "Remove Cisco SNMPv3"
+  hosts: all
+  gather_facts: no
+
+#Must Provide snmpv3 custom credential and snmpv3_accessLevel variable via survey ("read" or "write")
+
+  tasks:
+  - name: Set IOS Devices
+    block:                
+      - name: Set Credential with auth/priv
+        ios_config:
+          lines:
+            - no snmp-server group {{ snmpv3_group }} v3 {{ snmpv3_level }} match exact {{ snmpv3_accessLevel }} v1default
+            - no snmp-server user {{ snmpv3_username }} {{ snmpv3_group }} v3 auth {{ snmpv3_authType }} {{ snmpv3_authKey }} priv {{ snmpv3_privType }} {{ snmpv3_privKey }}
+          defaults: yes
+        when: snmpv3_level == "priv"
+
+      - name: Set Credential with auth only
+        ios_config:
+          lines:
+            - no snmp-server group {{ snmpv3_group }} v3 {{ snmpv3_level }} match exact {{ snmpv3_accessLevel }} v1default
+            - no snmp-server user {{ snmpv3_username }} {{ snmpv3_group }} v3 auth {{ snmpv3_authType }} {{ snmpv3_authKey }}
+          defaults: yes
+        when: snmpv3_level == "auth"
+
+      - name: Set Credential with no auth/priv
+        ios_config:
+          lines:
+            - no snmp-server group {{ snmpv3_group }} v3 {{ snmpv3_level }} match exact {{ snmpv3_accessLevel }} v1default
+            - no snmp-server user {{ snmpv3_username }} {{ snmpv3_group }} v3
+          defaults: yes
+        when: snmpv3_level == "noauth"
+
+    when: ansible_network_os == "ios"
+
+  - name: Set NXOS Devices
+    block:                
+      - name: Set Credential with auth/priv
+        nxos_snmp_user:
+          user: "{{ snmpv3_username }}"
+          state: absent
+        
+    when: ansible_network_os == "nxos"
