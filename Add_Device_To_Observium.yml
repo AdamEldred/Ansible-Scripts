@@ -15,5 +15,5 @@
     command: >-
       chdir="{{ observium_path | default('/opt/observium') }}"
       php add_device.php {{ inventory_hostname }}
-    when: "{{ inventory_hostname not in observium_discovered_devices.stdout_lines }}"
+    when: inventory_hostname not in observium_discovered_devices.stdout_lines
     delegate_to: "{{ observium_ip }}"
