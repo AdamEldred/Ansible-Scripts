@@ -1,5 +1,7 @@
 hostname devicename
 aaa new-model
+aaa authentication login default local
+aaa authorization exec default local if-authenticated 
 username admin priv 15 secret *****
 enable secret *****
 ip domain-name domain.local

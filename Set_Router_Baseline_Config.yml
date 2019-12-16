@@ -1,0 +1,22 @@
+---
+    - name: "Set Cisco SNMPv3"
+      hosts: all
+      gather_facts: no
+    
+    #Must Provide snmpv3 custom credential and snmpv3_accessLevel variable via survey ("read" or "write")
+    
+      tasks:
+      - debug: var=ansible_facts
+      - name: Set IOS Devices
+        block:    
+            - name: Set hostname
+                ios_config:
+                lines: hostname {{ inventory_hostname }}
+
+            - name: configure interface settings
+                ios_config:
+                lines:
+                    - description {{ interface.description }}
+                    - ip address {{ interface.address }} {{ interface.netmask }}
+                parents: interface {{ interface }}
+                with_interfaces:
