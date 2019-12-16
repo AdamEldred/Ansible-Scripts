@@ -10,8 +10,6 @@
     changed_when: False
     delegate_to: "{{ observium_ip }}"
 
-  - debug:
-      msg: "{{ inventory_hostname not in observium_discovered_devices.stdout_lines }}"
 
   - name: add devices to observium for discovery
     command: >-
