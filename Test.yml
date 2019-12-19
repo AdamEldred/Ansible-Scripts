@@ -1,5 +1,5 @@
 ---
-- name: "Get Cisco Device Info"
+- name: "Get Cisco Device Info "
   hosts: all
   connection: network_cli
   gather_facts: no
