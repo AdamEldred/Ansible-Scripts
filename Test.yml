@@ -1,8 +1,0 @@
----
-- name: "Get Cisco Device Info"
-  hosts: all
-  connection: network_cli
-  gather_facts: no
-  tasks:
-    - name: Gather Facts
-      nxos_facts:
