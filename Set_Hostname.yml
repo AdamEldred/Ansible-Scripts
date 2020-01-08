@@ -7,7 +7,7 @@
     - name: Set IOS Devices
       block:
         - name: Set Hostname and Domain
-        ios_system:
+          ios_system:
             state: present # not required. choices: present;absent. State of the configuration values in the device's current active configuration.  When set to I(present), the values should be configured in the device active configuration and when set to I(absent) the values should not be in the device active configuration
             name_servers: # not required. List of DNS name servers by IP address to use to perform name resolution lookups.  This argument accepts either a list of DNS servers See examples.
               - {{ NameServer1 }}
@@ -21,7 +21,7 @@
     - name: Set NXOS Devices
       block: 
         - name: Set Hostname and Domain
-        nxos_system:
+          nxos_system:
             state: present # not required. choices: present;absent. State of the configuration values in the device's current active configuration.  When set to I(present), the values should be configured in the device active configuration and when set to I(absent) the values should not be in the device active configuration
             name_servers: # not required. List of DNS name servers by IP address to use to perform name resolution lookups.  This argument accepts either a list of DNS servers See examples.
               - {{ NameServer1 }}
