@@ -21,7 +21,7 @@
             server: "{{ item }}"
             logging: false
             state: present
-          loop: "{{ ListNTPServers | default([129.6.15.28,69.164.202.202,216.239.35.4]) }}"
+          loop: "{{ ListNTPServers | default(['129.6.15.28','69.164.202.202','216.239.35.4']) }}"
           
       when: ansible_network_os == "ios"
     
