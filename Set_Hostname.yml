@@ -21,8 +21,7 @@
             server: "{{ item }}"
             logging: false
             state: present
-            loop:
-              - "{{ ListNTPServers | default([time-a-g.nist.gov,0.north-america.pool.ntp.org,time.google.com])}}"
+          loop: "{{ ListNTPServers | default([time-a-g.nist.gov,0.north-america.pool.ntp.org,time.google.com])}}"
           
       when: ansible_network_os == "ios"
     
