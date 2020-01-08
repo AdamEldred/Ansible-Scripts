@@ -1,0 +1,46 @@
+!
+aaa new-model
+aaa session-id common
+!
+aaa authentication login default local
+aaa authentication login VTY_authen group ise-tacacs-group local
+aaa authorization exec default local 
+aaa authorization exec VTY_author group ise-tacacs-group local if-authenticated 
+aaa accounting exec default start-stop group ise-tacacs-group
+aaa accounting commands 1 default start-stop group ise-tacacs-group
+aaa accounting commands 15 default start-stop group ise-tacacs-group
+aaa accounting suppress null-username
+aaa accounting update newinfo periodic 2880
+username admin privilege 15 secret 5 $1$HD0T$fk6zsHwfjiuPAoY16tSy21
+!
+tacacs server corp-ise2
+address ipv4 10.1.7.92
+key 7 1541114F337D7C737B29100A0157122E2802
+timeout 4
+tacacs server corp-ise3
+address ipv4 10.1.7.93
+key 7 1541114F337D7C737B29100A0157122E2802
+timeout 4
+tacacs server inv-ise2
+address ipv4 10.4.10.92
+key 7 1541114F337D7C737B29100A0157122E2802
+timeout 4
+!
+!
+aaa group server tacacs+ ise-tacacs-group
+server name corp-ise2
+server name corp-ise3
+server name inv-ise2
+!
+line con 0
+exec-timeout 0 0
+stopbits 1
+line vty 0 4
+authorization exec VTY_author
+login authentication VTY_authen
+transport input ssh
+line vty 5 15
+authorization exec VTY_author
+login authentication VTY_authen
+transport input ssh
+!

@@ -27,11 +27,6 @@
         - name: Configure AAA servers and groups
           ios_config:
             backup: yes
-            src: aaa_servers.j2
+            src: aaa_template_ios.j2
         
-        - name: Configure AAA settings
-          ios_config:
-            backup: yes
-            src: aaa_template.j2
-      
       when: ansible_network_os == "ios"

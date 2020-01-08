@@ -16,6 +16,13 @@
             domain_name: "{{ DomainName }}" # not required. Configure the IP domain name on the remote device to the provided value. Value should be in the dotted name form and will be appended to the C(hostname) to create a fully-qualified domain name.
             lookup_enabled: True # not required. Administrative control for enabling or disabling DNS lookups.  When this argument is set to True, lookups are performed and when it is set to False, lookups are not performed.
       
+        - name: Set NTP on IOS Devices
+          ios_ntp:
+            server: "{{ item }}"
+            logging: false
+            state: present
+          loop: "{{ ListNTPServers | default([time-a-g.nist.gov,0.north-america.pool.ntp.org,time.google.com])}}"
+          
       when: ansible_network_os == "ios"
     
     - name: Set NXOS Devices
