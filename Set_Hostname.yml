@@ -14,7 +14,7 @@
               - "{{ NameServer2 }}"
             hostname: "{{ HostName }}" # not required. Configure the device hostname parameter. This option takes an ASCII string value.            
             domain_name: "{{ DomainName }}" # not required. Configure the IP domain name on the remote device to the provided value. Value should be in the dotted name form and will be appended to the C(hostname) to create a fully-qualified domain name.
-            lookup_enabled: False # not required. Administrative control for enabling or disabling DNS lookups.  When this argument is set to True, lookups are performed and when it is set to False, lookups are not performed.
+            lookup_enabled: True # not required. Administrative control for enabling or disabling DNS lookups.  When this argument is set to True, lookups are performed and when it is set to False, lookups are not performed.
       
       when: ansible_network_os == "ios"
     
@@ -28,7 +28,7 @@
               - { server: "{{ NameServer2 }}", vrf: management }
             hostname: "{{ HostName }}" # not required. Configure the device hostname parameter. This option takes an ASCII string value.            
             domain_name: "{{ DomainName }}" # not required. Configure the IP domain name on the remote device to the provided value. Value should be in the dotted name form and will be appended to the C(hostname) to create a fully-qualified domain name.
-            domain_lookup: False # not required. Administrative control for enabling or disabling DNS lookups.  When this argument is set to True, lookups are performed and when it is set to False, lookups are not performed.
+            domain_lookup: True # not required. Administrative control for enabling or disabling DNS lookups.  When this argument is set to True, lookups are performed and when it is set to False, lookups are not performed.
             system_mtu: default # not required. Specifies the mtu, must be an integer or keyword 'default'.
 
       when: ansible_network_os == "nxos"
