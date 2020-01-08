@@ -3,24 +3,27 @@
   hosts: all
   gather_facts: no
 
+  vars:
+    BannerText: "{{ lookup('file', './docs/banner.cfg') }}"
+    when: (BannerText is undefined) or (not BannerText)
+
   tasks:
     - name: Set IOS Devices
       block:                
       - name: CONFIGURE BANNER ON CISCO IOS DEVICES
         ios_banner:
           banner: login
-          text: "{{ lookup('file', './docs/banner.cfg') }}"
+          text: "{{ BannerText }}"
           state: present
 
       when: ansible_network_os == "ios"
 
-  tasks:
     - name: Set NXOS Devices
       block:                
       - name: CONFIGURE BANNER ON CISCO NXOS DEVICES
         nxos_banner:
           banner: motd
-          text: "{{ lookup('file', './docs/banner.cfg') }}"
+          text: "{{ BannerText }}"
           state: present
 
       when: ansible_network_os == "nxos"
