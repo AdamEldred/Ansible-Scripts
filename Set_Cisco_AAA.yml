@@ -1,0 +1,37 @@
+---
+- name: "SET AAA ON CISCO DEVICES"
+  hosts: all
+  gather_facts: no
+
+  tasks:
+    - name: Set IOS Devices
+      block:
+        - name: Set AAA new-model
+          ios_config:
+            lines:
+              - aaa new-model
+              - aaa session-id common
+
+        - name: Create admin user in local user database
+          ios_user:
+              update_password: on_create # not required. choices: on_create;always. Since passwords are encrypted in the device running config, this argument will instruct the module when to change the password.  When set to C(always), the password will always be updated in the device and when set to C(on_create) the password will be updated only if the username is created.
+              configured_password: "{{ ANSIBLE_NET_PASSWORD }}" # not required. The password to be configured on the Cisco IOS device. The password needs to be provided in clear and it will be encrypted on the device. Please note that this option is not same as C(provider password).
+              name: "{{ ANSIBLE_NET_USERNAME }}" # not required. The username to be configured on the Cisco IOS device. This argument accepts a string value and is mutually exclusive with the C(aggregate) argument. Please note that this option is not same as C(provider username).
+              privilege: 15 # not required. The C(privilege) argument configures the privilege level of the user when logged into the system. This argument accepts integer values in the range of 1 to 15.
+              state: present # not required. choices: present;absent. Configures the state of the username definition as it relates to the device operational configuration. When set to I(present), the username(s) should be configured in the device active configuration and when set to I(absent) the username(s) should not be in the device active configuration
+        
+        - name: Purge unauthorized local users
+          ios_user:
+              purge: yes # not required. Instructs the module to consider the resource definition absolute. It will remove any previously configured usernames on the device with the exception of the `admin` user (the current defined set of users).
+
+        - name: Configure AAA servers and groups
+          ios_config:
+            backup: yes
+            src: aaa_servers.j2
+        
+        - name: Configure AAA settings
+          ios_config:
+            backup: yes
+            src: aaa_template.j2
+      
+      when: ansible_network_os == "ios"
