@@ -1,0 +1,17 @@
+---
+- name: "Add Device to NPS"
+  hosts: all
+  gather_facts: no
+
+  tasks:
+  - name: get list of discovered devices from NPS
+    command: Get-NpsRadiusClient | foreach { $_.Name }
+    register: discovered_devices
+    changed_when: False
+    delegate_to: "{{ NPSIP }}"
+
+
+  - name: add devices to observium for discovery
+    command: New-NpsRadiusClient -Address "{{ ansible_default_ipv4.address }}" -Name "{{ inventory_hostname }}" -SharedSecret "{{ RadiusSecret }}"
+    when: inventory_hostname not in _discovered_devices.stdout_lines
+    delegate_to: "{{ NPSIP }}"
