@@ -9,7 +9,7 @@
       - name: CONFIGURE BANNER ON CISCO IOS DEVICES
         ios_banner:
           banner: login
-          text: "{{ lookup('file', './docs/banner.cfg') }}"
+          text: "{{ BannerText | default( lookup('file', './docs/banner.cfg') ) }}"
           state: present
 
       when: ansible_network_os == "ios"
@@ -20,7 +20,7 @@
       - name: CONFIGURE BANNER ON CISCO NXOS DEVICES
         nxos_banner:
           banner: motd
-          text: "{{ lookup('file', './docs/banner.cfg') }}"
+          text: "{{ BannerText | default( lookup('file', './docs/banner.cfg') ) }}"
           state: present
 
       when: ansible_network_os == "nxos"
