@@ -5,7 +5,7 @@
 
   vars:
     BannerText: "{{ lookup('file', './docs/banner.cfg') }}"
-    when: (BannerText is undefined) or (not BannerText)
+  when: (BannerText is undefined) or (not BannerText)
 
   tasks:
     - name: Set IOS Devices
