@@ -13,5 +13,5 @@
 
   - name: add devices to observium for discovery
     command: New-NpsRadiusClient -Address "{{ ansible_default_ipv4.address }}" -Name "{{ HostName }}" -SharedSecret "{{ RadiusSecret }}"
-    when: inventory_hostname not in _discovered_devices.stdout_lines
+    when: HostName not in discovered_devices.stdout_lines
     delegate_to: "{{ NPSIP }}"
