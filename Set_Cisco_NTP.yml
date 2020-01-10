@@ -2,6 +2,8 @@
 - name: "SET NTP ON CISCO DEVICES"
   hosts: all
   gather_facts: no
+  vars:
+    - NTP_Servers: "{{ NTP_Servers_List.split('\n') }}"
 
   tasks:
     - name: Set IOS Devices
