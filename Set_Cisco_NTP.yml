@@ -9,7 +9,6 @@
         - name: "GET NTP CONFIGURATION"
           register: get_ntp_config
           ios_command:
-            Provider: "{{ Provider }}"
             commands:
               - "show running-config | include clock TimeZone"
               - "show running-config | include clock summer-time"
@@ -20,9 +19,9 @@
           when: "(TimeZone is defined) and (TimeZone != get_ntp_config.stdout_lines[0][0])"
           register: set_TimeZone
           ios_config:
-            Provider: "{{ Provider }}"
             lines:
               - "{{ TimeZone }}"
+
         - name: "POSTPONE CONFIGURATION SAVE"
           when: "(set_TimeZone.changed == true)"
           set_fact: configured=true
@@ -31,7 +30,6 @@
           when: "(SummerTime is defined) and (SummerTime != get_ntp_config.stdout_lines[1][0])"
           register: set_SummerTime
           ios_config:
-            Provider: "{{ Provider }}"
             lines:
               - "{{ SummerTime }}"
 
@@ -43,7 +41,6 @@
           when: "(SummerTime is not defined) and (get_ntp_config.stdout_lines[1][0] != \"\")"
           register: remove_SummerTime
           ios_config:
-            Provider: "{{ Provider }}"
             lines:
               - "no {{ get_ntp_config.stdout_lines[1][0] }}"
 
@@ -51,12 +48,33 @@
           when: "(remove_SummerTime.changed == true)"
           set_fact: configured=true
 
+        - name: "SET NTP SOURCE"
+          when: "(ntp_source is defined) and (ntp_source != get_ntp_config.stdout_lines[2][0])"
+          register: set_ntp_source
+          ios_config:
+            lines:
+              - "{{ ntp_source }}"
+
+        - name: "POSTPONE CONFIGURATION SAVE"
+          when: "(set_ntp_source.changed == true)"
+          set_fact: configured=true
+
+        - name: "REMOVE NTP SOURCE"
+          when: "(ntp_source is not defined) and (get_ntp_config.stdout_lines[2][0] != \"\")"
+          register: remove_ntp_source
+          ios_config:
+            lines:
+              - "no {{ get_ntp_config.stdout_lines[2][0] }}"
+
+        - name: "POSTPONE CONFIGURATION SAVE"
+          when: "(remove_ntp_source.changed == true)"
+          set_fact: configured=true
+
         - name: "SET NTP SERVER"
           when: "(item not in get_ntp_config.stdout_lines[3])"
           with_items: "{{ NTP_Servers }}"
           register: set_ntp_server
           ios_config:
-            Provider: "{{ Provider }}"
             lines:
               - "{{ item }}"
 
@@ -69,7 +87,6 @@
           with_items: "{{ get_ntp_config.stdout_lines[3] }}"
           register: remove_ntp_server
           ios_config:
-            Provider: "{{ Provider }}"
             lines:
               - "no {{ item }}"
 
@@ -81,7 +98,6 @@
           when: "(configured is defined) and (configured == true)"
           register: save_config
           ios_command:
-            Provider: "{{ Provider }}"
             commands:
               - "write memory"
 
