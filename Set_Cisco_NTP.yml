@@ -1,0 +1,88 @@
+---
+- name: "SET NTP ON CISCO DEVICES"
+  hosts: all
+  gather_facts: no
+
+  tasks:
+    - name: Set IOS Devices
+      block:        
+        - name: "GET NTP CONFIGURATION"
+          register: get_ntp_config
+          ios_command:
+            Provider: "{{ Provider }}"
+            commands:
+              - "show running-config | include clock TimeZone"
+              - "show running-config | include clock summer-time"
+              - "show running-config | include ntp source"
+              - "show running-config | include ntp server"
+
+        - name: "SET TIMEZONE"
+          when: "(TimeZone is defined) and (TimeZone != get_ntp_config.stdout_lines[0][0])"
+          register: set_TimeZone
+          ios_config:
+            Provider: "{{ Provider }}"
+            lines:
+              - "{{ TimeZone }}"
+        - name: "POSTPONE CONFIGURATION SAVE"
+          when: "(set_TimeZone.changed == true)"
+          set_fact: configured=true
+
+        - name: "SET SUMMERTIME"
+          when: "(SummerTime is defined) and (SummerTime != get_ntp_config.stdout_lines[1][0])"
+          register: set_SummerTime
+          ios_config:
+            Provider: "{{ Provider }}"
+            lines:
+              - "{{ SummerTime }}"
+
+        - name: "POSTPONE CONFIGURATION SAVE"
+          when: "(set_TimeZone.changed == true)"
+          set_fact: configured=true
+
+        - name: "REMOVE SUMMERTIME"
+          when: "(SummerTime is not defined) and (get_ntp_config.stdout_lines[1][0] != \"\")"
+          register: remove_SummerTime
+          ios_config:
+            Provider: "{{ Provider }}"
+            lines:
+              - "no {{ get_ntp_config.stdout_lines[1][0] }}"
+
+        - name: "POSTPONE CONFIGURATION SAVE"
+          when: "(remove_SummerTime.changed == true)"
+          set_fact: configured=true
+
+        - name: "SET NTP SERVER"
+          when: "(item not in get_ntp_config.stdout_lines[3])"
+          with_items: "{{ NTP_Servers }}"
+          register: set_ntp_server
+          ios_config:
+            Provider: "{{ Provider }}"
+            lines:
+              - "{{ item }}"
+
+        - name: "POSTPONE CONFIGURATION SAVE"
+          when: "(set_ntp_server.changed == true)"
+          set_fact: configured=true
+
+        - name: "REMOVE NTP SERVER"
+          when: "(item not in ntp_servers)"
+          with_items: "{{ get_ntp_config.stdout_lines[3] }}"
+          register: remove_ntp_server
+          ios_config:
+            Provider: "{{ Provider }}"
+            lines:
+              - "no {{ item }}"
+
+        - name: "POSTPONE CONFIGURATION SAVE"
+          when: "(remove_ntp_server.changed == true)"
+          set_fact: configured=true
+
+        - name: "SAVE CONFIGURATION"
+          when: "(configured is defined) and (configured == true)"
+          register: save_config
+          ios_command:
+            Provider: "{{ Provider }}"
+            commands:
+              - "write memory"
+
+      when: ansible_network_os == "ios"
