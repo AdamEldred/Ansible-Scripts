@@ -49,7 +49,7 @@
           set_fact: configured=true
 
         - name: "SET NTP SOURCE"
-          when: "(ntp_source is defined) and (ntp_source != get_ntp_config.stdout_lines[2][0])"
+          when: "(NTP_Source is defined) and (NTP_Source != get_ntp_config.stdout_lines[2][0])"
           register: set_ntp_source
           ios_config:
             lines:
@@ -60,7 +60,7 @@
           set_fact: configured=true
 
         - name: "REMOVE NTP SOURCE"
-          when: "(ntp_source is not defined) and (get_ntp_config.stdout_lines[2][0] != \"\")"
+          when: "(NTP_Source is not defined) and (get_ntp_config.stdout_lines[2][0] != \"\")"
           register: remove_ntp_source
           ios_config:
             lines:
@@ -83,7 +83,7 @@
           set_fact: configured=true
 
         - name: "REMOVE NTP SERVER"
-          when: "(item not in ntp_servers)"
+          when: "(item not in NTP_Servers)"
           with_items: "{{ get_ntp_config.stdout_lines[3] }}"
           register: remove_ntp_server
           ios_config:
