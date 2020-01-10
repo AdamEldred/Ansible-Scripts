@@ -3,7 +3,7 @@
   hosts: all
   gather_facts: no
   vars:
-    - NTP_Servers: "{{ NTP_Servers_List.split('\n') }}"
+    - NTP_Servers: "{{ NTP_Servers_Text.split('\n') }}"
 
   tasks:
     - name: Set IOS Devices
