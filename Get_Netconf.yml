@@ -8,8 +8,8 @@
     - name: Get running configuration and state data
       netconf_get:
         source: running
-        display: json
-      register: output_json
+        display: pretty
+      register: output
     - name: output to log
       debug:
-        var: output_json
+        var: output
