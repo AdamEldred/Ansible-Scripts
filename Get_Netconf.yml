@@ -1,7 +1,7 @@
 ---
 - name: "Get Netconf"
   hosts: all
-  connection: netconf
+  ansible_connection: netconf
   gather_facts: no
 
   tasks:
