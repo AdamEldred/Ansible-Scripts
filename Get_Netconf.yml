@@ -7,8 +7,9 @@
   tasks:
     - name: Get running configuration and state data
       netconf_get:
+        source: running
         display: json
-        register: output_json
+      register: output_json
     - name: output to log
       debug:
         var: output_json
