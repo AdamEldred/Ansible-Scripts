@@ -11,6 +11,9 @@
           ios_config:
             lines:
               - netconf-yang
+              - aaa authentication login default local
+              - aaa authorization exec default local if-authenticated
+
       when: ansible_network_os == "ios"
     
     - name: Set NXOS Devices
