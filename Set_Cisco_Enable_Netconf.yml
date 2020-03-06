@@ -1,0 +1,22 @@
+---
+- name: "Set Cisco Enable Netconf"
+  hosts: all
+  gather_facts: no
+
+  tasks:
+    - name: Set IOS Devices
+      block:
+        - name: Enable Netconf on IOS Devices
+          ios_config:
+            lines:
+              - netconf-yang
+      when: ansible_network_os == "ios"
+    
+    - name: Set NXOS Devices
+      block: 
+        - name: Enable Netconf on NX-OS Devices
+          nxos_feature:
+            feature: netconf
+            state: enabled
+
+      when: ansible_network_os == "nxos"

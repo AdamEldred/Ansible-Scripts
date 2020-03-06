@@ -1,0 +1,9 @@
+---
+- name: "Get Netconf"
+  hosts: all
+  connection: netconf
+  gather_facts: no
+
+  tasks:
+    - name: Get running configuration and state data
+      netconf_get:
