@@ -1,6 +1,7 @@
 ---
 - name: "SET AAA ON CISCO DEVICES"
   hosts: all
+  connection: network_cli
   gather_facts: no
 
   tasks:

@@ -1,6 +1,7 @@
 ---
 - name: "Set Cisco SNMPv3"
   hosts: all
+  connection: network_cli
   gather_facts: no
 
 #Must Provide snmpv3 custom credential and snmpv3_accessLevel variable via survey ("read" or "write")
