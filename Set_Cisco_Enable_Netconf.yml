@@ -1,6 +1,7 @@
 ---
 - name: "Set Cisco Enable Netconf"
   hosts: all
+  connection: network_cli
   gather_facts: no
 
   tasks:
