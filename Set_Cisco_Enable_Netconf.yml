@@ -13,6 +13,7 @@
               - netconf-yang
               - aaa authentication login default local
               - aaa authorization exec default local if-authenticated
+            save_when: modified 
 
       when: ansible_network_os == "ios"
     
