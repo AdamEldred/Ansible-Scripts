@@ -2,6 +2,7 @@
 - name: "SET BANNER ON CISCO DEVICES"
   hosts: all
   gather_facts: no
+  connection: network_cli
 
   tasks:
     - name: Set IOS Devices
