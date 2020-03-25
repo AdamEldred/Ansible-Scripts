@@ -35,10 +35,29 @@
     pamd:
       name: common-auth
       type: auth
-      control: '[success=1 default=ignore]'
+      control: '[success=2 default=ignore]'
       module_path: pam_unix.so
       new_type: auth
       new_control: sufficient
       new_module_path: pam_radius_auth.so
       state: before
       backup: yes
+
+  - name: Make User Directories on login with pam_mkhomedir
+    pamd:
+      name: login
+      type: session
+      control: required
+      module_path: pam_limits.so
+      new_type: session
+      new_control: required
+      new_module_path: pam_mkhomedir.so
+      state: after
+      backup: yes
+    pamd:
+      name: login
+      type: session
+      control: required
+      module_path: pam_mkhomedir.so
+      module_arguments: 'skel=/etc/skel/ umask=0077'
+      state: updated
