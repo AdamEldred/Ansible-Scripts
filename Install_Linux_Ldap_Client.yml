@@ -54,6 +54,7 @@
       new_module_path: pam_mkhomedir.so
       state: after
       backup: yes
+  - name: Add arguments to mkdir
     pamd:
       name: login
       type: session
