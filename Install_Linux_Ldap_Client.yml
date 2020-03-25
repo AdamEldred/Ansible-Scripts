@@ -5,6 +5,7 @@
   tasks:
   - name: Install LinbNSS and Radius Auth
     apt:
+      upgrade: yes
       name: 
       - libnss-ldapd
       - libpam-radius-auth
