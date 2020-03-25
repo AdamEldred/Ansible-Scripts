@@ -1,0 +1,39 @@
+---
+- name: "Install Linux Ldap Client"
+  hosts: all
+
+  tasks:
+  - name: Install LinbNSS and Radius Auth
+    apt:
+      name: 
+      - libnss-ldapd
+      - libpam-radius-auth
+
+  - name: Insert a new rule pam_radius_auth.so 
+    pamd:
+      name: common-auth
+      type: auth
+      control: '[success=1 default=ignore]'
+      module_path: pam_unix.so
+      new_type: auth
+      new_control: sufficient
+      new_module_path: pam_radius_auth.so
+      state: before
+
+  - name: /etc/nslcd.conf
+    template:
+      src: /LDAP_Templates/nslcd.conf
+      dest: /etc/nslcd.conf
+      owner: root
+      group: nslcd
+      mode: 0640
+
+  - name: Add ldap to nsswitch.conf
+    replace:
+      path: /etc/nsswitch.conf
+      regexp: "(^{{ item }}:(?!.*ldap).*$)"
+      replace: '\1 ldap'
+    loop:
+    - 'passwd'
+    - 'group'
+    - 'shadow'
