@@ -12,7 +12,7 @@
       - libpam-radius-auth
     when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
-  - name: /etc/nslcd.conf
+  - name: Create /etc/nslcd.conf for LDAP Config
     template:
       src: ./LDAP_Templates/nslcd.conf
       dest: /etc/nslcd.conf
@@ -21,12 +21,12 @@
       mode: 0640
       backup: yes
 
-  - name: ansible create directory example
+  - name: Create /etc/raddb directory
     file:
-      path: /tmp/devops_directory
+      path: /etc/raddb
       state: directory
 
-  - name: /etc/raddb/server
+  - name: Create /etc/raddb/server for RADIUS Config
     template:
       src: ./LDAP_Templates/server
       dest: /etc/raddb/server
@@ -35,7 +35,7 @@
       mode: 0600
       backup: yes
 
-  - name: Add ldap to nsswitch.conf
+  - name: Add ldap to nsswitch.conf for directory lookups
     replace:
       path: /etc/nsswitch.conf
       regexp: "(^{{ item }}:(?!.*ldap).*$)"
@@ -46,7 +46,7 @@
     - 'group'
     - 'shadow'
 
-  - name: Update unix auth to skip new entry
+  - name: Update PAM unix auth to skip new entry
     pamd:
       name: common-auth
       type: auth
@@ -56,7 +56,7 @@
       backup: yes
     when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
-  - name: Insert a new rule pam_radius_auth.so 
+  - name: Insert a new PAM rule pam_radius_auth.so 
     pamd:
       name: common-auth
       type: auth
