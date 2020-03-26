@@ -21,13 +21,18 @@
       mode: 0640
       backup: yes
 
+  - name: ansible create directory example
+    file:
+      path: /tmp/devops_directory
+      state: directory
+
   - name: /etc/raddb/server
     template:
       src: ./LDAP_Templates/server
       dest: /etc/raddb/server
       owner: root
       group: nslcd
-      mode: 0640
+      mode: 0600
       backup: yes
 
   - name: Add ldap to nsswitch.conf
@@ -75,6 +80,7 @@
       new_module_path: pam_mkhomedir.so
       state: after
       backup: yes
+
   - name: Add arguments to mkdir
     pamd:
       name: login
