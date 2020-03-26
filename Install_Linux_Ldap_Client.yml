@@ -10,6 +10,7 @@
       name: 
       - libnss-ldapd
       - libpam-radius-auth
+    when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
   - name: /etc/nslcd.conf
     template:
@@ -31,17 +32,28 @@
     - 'group'
     - 'shadow'
 
-  - name: Insert a new rule pam_radius_auth.so 
+  - name: Update unix auth to skip new entry
     pamd:
       name: common-auth
       type: auth
       control: '[success=2 default=ignore]'
       module_path: pam_unix.so
-      new_type: auth
-      new_control: sufficient
-      new_module_path: pam_radius_auth.so
-      state: before
+      new_control: '[success=3 default=ignore]'
       backup: yes
+    when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+  - name: Insert a new rule pam_radius_auth.so 
+    pamd:
+      name: common-auth
+      type: auth
+      control: '[success=3 default=ignore]'
+      module_path: pam_unix.so
+      new_type: auth
+      new_control: '[success=2 default=ignore]'
+      new_module_path: pam_radius_auth.so
+      state: after
+      backup: yes
+    when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
   - name: Make User Directories on login with pam_mkhomedir
     pamd:
